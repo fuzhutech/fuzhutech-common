@@ -1,5 +1,6 @@
 package com.fuzhutech.common.controller;
 
+import com.fuzhutech.common.entity.BaseEntity;
 import com.fuzhutech.common.service.BaseService;
 import com.fuzhutech.common.DataTableResult;
 import com.fuzhutech.common.PageInfo;
@@ -20,7 +21,7 @@ import java.util.List;
 //权限管理
 //@RestController
 //@RequestMapping("/api")
-public abstract class RestfulController<T> {
+public abstract class RestfulController<T extends BaseEntity> {
 
     private static Logger logger = LoggerFactory.getLogger(RestfulController.class);
 
@@ -28,7 +29,9 @@ public abstract class RestfulController<T> {
     protected BaseService<T> service;
 
     //获取记录id
-    abstract protected Integer getModelId(T model);
+    protected Integer getModelId(T model){
+        return model.getId();
+    };
 
     //获取列表.
     @RequestMapping(method = RequestMethod.GET)
