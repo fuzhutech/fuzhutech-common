@@ -1,4 +1,4 @@
-package com.fuzhutech.common.filter;
+package com.fuzhutech.common.web.filter;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

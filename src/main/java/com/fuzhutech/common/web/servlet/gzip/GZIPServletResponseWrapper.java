@@ -1,13 +1,11 @@
-package com.fuzhutech.common.servlet;
+package com.fuzhutech.common.web.servlet.gzip;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpServletResponseWrapper;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
-import java.util.zip.GZIPOutputStream;
 
 public class GZIPServletResponseWrapper extends HttpServletResponseWrapper {
 

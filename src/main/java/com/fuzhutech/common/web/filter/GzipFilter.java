@@ -1,5 +1,6 @@
-package com.fuzhutech.common.servlet;
+package com.fuzhutech.common.web.filter;
 
+import com.fuzhutech.common.web.servlet.gzip.GZIPServletResponseWrapper;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -10,9 +11,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-public class GZIPFilter implements Filter {
+public class GzipFilter implements Filter {
 
-    private static Logger logger = LoggerFactory.getLogger(GZIPFilter.class);
+    private static Logger logger = LoggerFactory.getLogger(GzipFilter.class);
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {

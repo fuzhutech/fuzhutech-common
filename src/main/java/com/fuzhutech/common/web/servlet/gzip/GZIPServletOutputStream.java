@@ -1,7 +1,6 @@
-package com.fuzhutech.common.servlet;
+package com.fuzhutech.common.web.servlet.gzip;
 
 import javax.servlet.ServletOutputStream;
-import javax.servlet.ServletResponse;
 import javax.servlet.WriteListener;
 import javax.servlet.http.HttpServletResponse;
 import java.io.ByteArrayOutputStream;

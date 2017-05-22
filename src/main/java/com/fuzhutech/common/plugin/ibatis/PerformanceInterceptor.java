@@ -1,4 +1,4 @@
-package com.fuzhutech.common.plugin;
+package com.fuzhutech.common.plugin.ibatis;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;

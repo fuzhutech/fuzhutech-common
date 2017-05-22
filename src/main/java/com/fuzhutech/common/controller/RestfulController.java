@@ -1,10 +1,10 @@
 package com.fuzhutech.common.controller;
 
-import com.fuzhutech.common.entity.BaseEntity;
-import com.fuzhutech.common.service.BaseService;
 import com.fuzhutech.common.DataTableResult;
 import com.fuzhutech.common.PageInfo;
 import com.fuzhutech.common.ResponseResult;
+import com.fuzhutech.common.entity.BaseEntity;
+import com.fuzhutech.common.service.BaseService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,75 +21,95 @@ import java.util.List;
 //权限管理
 //@RestController
 //@RequestMapping("/api")
-public abstract class RestfulController<T extends BaseEntity> {
+public abstract class RestfulController<T extends BaseEntity> extends BaseController {
 
     private static Logger logger = LoggerFactory.getLogger(RestfulController.class);
 
     @Autowired
     protected BaseService<T> service;
 
-    //获取记录id
-    protected Integer getModelId(T model){
-        return model.getId();
-    };
-
     //获取列表.
     @RequestMapping(method = RequestMethod.GET)
-    private List<T> getList(HttpServletRequest request, HttpServletResponse response, T model) {
-        //logger.info(this.getModelId());
-        return service.queryListByWhere(model);
+    public List<T> getList(HttpServletRequest request, HttpServletResponse response, T model) {
+        return getListInternal(request, response, model);
     }
 
     //获取列表-分页
-    @RequestMapping(value="/page",method = RequestMethod.GET)
-    private DataTableResult getListByPageInfo(HttpServletRequest request, HttpServletResponse response, PageInfo pageInfo) {
-        return service.queryByPageInfo(pageInfo);
+    @RequestMapping(value = "/page", method = RequestMethod.GET)
+    public DataTableResult getListByPageInfo(HttpServletRequest request, HttpServletResponse response, PageInfo pageInfo) {
+        return getListByPageInfoInternal(request, response, pageInfo);
     }
 
     //获取单条记录
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-    private T getSingle(@PathVariable("id") Integer id) {
-        return service.queryById(id);
+    public T getSingle(HttpServletRequest request, HttpServletResponse response, @PathVariable("id") Integer id) {
+        return getSingleInternal(request, response, id);
     }
 
     //响应新增请求
     @RequestMapping(method = RequestMethod.POST)
-    private ResponseResult add(@RequestBody T model) {
-        ResponseResult responseResult = new ResponseResult();
-        try {
-            service.add(model);
-            responseResult.setData(getModelId(model));
-            return new ResponseResult(ResponseResult.SUCCESS,getModelId(model));
-        } catch (RuntimeException ex) {
-            //logger.error("编辑失败：{}", ex);
-            return new ResponseResult(ResponseResult.FAILURE,getModelId(model),ex.getMessage());
-        }
+    public ResponseResult add(HttpServletRequest request, HttpServletResponse response, @RequestBody T model) {
+        return addInternal(request, response, model);
     }
 
     //更新
     @RequestMapping(method = RequestMethod.PUT)
-    private ResponseResult edit(@RequestBody T model/*,HttpServletRequest request*/) {
-        ResponseResult responseResult = new ResponseResult();
-        try {
-            service.update(model);
-            return new ResponseResult(ResponseResult.SUCCESS);
-        } catch (RuntimeException ex) {
-            //logger.error("编辑失败：{}", ex);
-            return new ResponseResult(ResponseResult.FAILURE,null,ex.getMessage());
-        }
+    public ResponseResult edit(HttpServletRequest request, HttpServletResponse response, @RequestBody T model) {
+        return editInternal(request, response, model);
     }
 
     //响应删除请求.
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-    private ResponseResult delete(@PathVariable("id") Integer id) {
-        ResponseResult responseResult = new ResponseResult();
+    public ResponseResult delete(HttpServletRequest request, HttpServletResponse response,
+                                 @PathVariable("id") Integer id) {
+        return deleteInternal(request, response, id);
+    }
+
+    protected List<T> getListInternal(HttpServletRequest request, HttpServletResponse response, T model) {
+        return service.queryListByWhere(model);
+    }
+
+    protected DataTableResult getListByPageInfoInternal(HttpServletRequest request, HttpServletResponse response, PageInfo pageInfo) {
+        return service.queryByPageInfo(pageInfo);
+    }
+
+    protected T getSingleInternal(HttpServletRequest request, HttpServletResponse response, Integer id) {
+        return service.queryById(id);
+    }
+
+    protected ResponseResult addInternal(HttpServletRequest request, HttpServletResponse response, T model) {
         try {
-            service.deleteById(id);
+            service.add(model);
+
+            //将id返回给请求
+            return new ResponseResult(ResponseResult.SUCCESS, model.getId());
+        } catch (RuntimeException ex) {
+            logger.error("新增失败：{}", ex);
+            return new ResponseResult(ResponseResult.FAILURE, model.getId(), ex.getMessage());
+        }
+
+    }
+
+    protected ResponseResult editInternal(HttpServletRequest request, HttpServletResponse response, T model) {
+        try {
+            service.update(model);
             return new ResponseResult(ResponseResult.SUCCESS);
         } catch (RuntimeException ex) {
-            //logger.error("删除失败：{}", ex);
-            return new ResponseResult(ResponseResult.FAILURE,null,ex.getMessage());
+            logger.error("编辑失败：{}", ex);
+            return new ResponseResult(ResponseResult.FAILURE, null, ex.getMessage());
         }
+    }
+
+    protected ResponseResult deleteInternal(HttpServletRequest request, HttpServletResponse response, Integer id) {
+        try {
+            service.deleteById(id);
+
+            return new ResponseResult(ResponseResult.SUCCESS);
+        } catch (RuntimeException ex) {
+            logger.error("删除失败：{}", ex);
+            return new ResponseResult(ResponseResult.FAILURE, null, ex.getMessage());
+        }
+
     }
 
 }

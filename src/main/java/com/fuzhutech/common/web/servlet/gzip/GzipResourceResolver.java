@@ -1,15 +1,13 @@
-package com.fuzhutech.common.servlet;
+package com.fuzhutech.common.web.servlet.gzip;
 
 import java.io.*;
 import java.net.URI;
 import java.net.URL;
 import java.util.List;
-import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.io.FilenameUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.io.AbstractResource;
