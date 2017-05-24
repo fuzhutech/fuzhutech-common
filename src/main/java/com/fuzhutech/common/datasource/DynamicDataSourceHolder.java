@@ -27,7 +27,7 @@ public class DynamicDataSourceHolder {
   /**
    * 获取数据源key.
    * 
-   * @return.
+   * @return String.
    */
   public static String getDataSourceKey() {
     return holder.get();

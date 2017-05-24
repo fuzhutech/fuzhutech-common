@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface BaseMapper<T> {
 
-  /*** MyBatis-generator默认生成方法. **/
+  //MyBatis-generator默认生成方法
   int deleteByPrimaryKey(Integer id);
 
   int insert(T record);
@@ -19,7 +19,7 @@ public interface BaseMapper<T> {
 
   int updateByPrimaryKey(T record);
 
-  /*** 需要手工在mapper.xml添加的方法 **/
+  // 需要手工在mapper.xml添加的方法
   List<?> selectByPageInfo(PageInfo pageInfo);
 
   int countByPageInfo(PageInfo pageInfo);
