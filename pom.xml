@@ -91,7 +91,7 @@
     <licenses>
         <license>
             <name>The MIT License</name>
-            <url>https://github.com/fuzhutech/fuzhutech-ueditor/blob/master/LICENSE</url>
+            <url>https://github.com/fuzhutech/fuzhutech-common/blob/master/LICENSE</url>
         </license>
     </licenses>
 
@@ -102,9 +102,9 @@
         </developer>
     </developers>
     <scm>
-        <connection>scm:git:https://github.com/fuzhutech/fuzhutech-ueditor.git</connection>
-        <developerConnection>scm:git:https://github.com/fuzhutech/fuzhutech-ueditor.git</developerConnection>
-        <url>https://github.com/fuzhutech/fuzhutech-ueditor</url>
+        <connection>scm:git:https://github.com/fuzhutech/fuzhutech-common.git</connection>
+        <developerConnection>scm:git:https://github.com/fuzhutech/fuzhutech-common.git</developerConnection>
+        <url>https://github.com/fuzhutech/fuzhutech-common</url>
     </scm>
 
     <distributionManagement>
