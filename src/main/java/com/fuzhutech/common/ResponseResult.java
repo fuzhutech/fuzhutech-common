@@ -1,33 +1,38 @@
 package com.fuzhutech.common;
 
+import java.util.HashMap;
+import java.util.Map;
+
 //操作结果集
 public class ResponseResult {
 
     public static final int SUCCESS = 1;
     public static final int FAILURE = -1;
 
-    private int status = FAILURE;
-    private Object data = null;
-    private String message = "";
-
+    private int status;
+    private String message;
+    private Map<String, Object> data;
 
     public ResponseResult() {
-        //
+        this(ResponseResult.SUCCESS);
     }
 
     public ResponseResult(int status) {
-        this.status = status;
+        this(status, "");
     }
 
-    public ResponseResult(int status, Object data) {
-        this.status = status;
-        this.data = data;
+    public ResponseResult(int status, String message) {
+        this(status, message, null);
     }
 
-    public ResponseResult(int status, Object data, String message) {
+    public ResponseResult(int status, Map<String, Object> data) {
+        this(status, "", data);
+    }
+
+    public ResponseResult(int status, String message, Map<String, Object> data) {
         this.status = status;
-        this.data = data;
         this.message = message;
+        this.data = data;
     }
 
     public int getStatus() {
@@ -38,14 +43,6 @@ public class ResponseResult {
         this.status = status;
     }
 
-    public Object getData() {
-        return data;
-    }
-
-    public void setData(Object data) {
-        this.data = data;
-    }
-
     public String getMessage() {
         return message;
     }
@@ -54,5 +51,20 @@ public class ResponseResult {
         this.message = message;
     }
 
+    public Map<String, Object> getData() {
+        return data;
+    }
+
+    public void setData(Map<String, Object> data) {
+        this.data = data;
+    }
+
+    public void putData(String key, Object value) {
+        if (data == null) {
+            data = new HashMap<String, Object>();
+        }
+
+        data.put(key, value);
+    }
 
 }

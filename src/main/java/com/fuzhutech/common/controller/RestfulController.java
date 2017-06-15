@@ -78,25 +78,31 @@ public abstract class RestfulController<T extends BaseEntity> extends BaseContro
     }
 
     protected ResponseResult addInternal(HttpServletRequest request, HttpServletResponse response, T model) {
+        ResponseResult responseResult = new ResponseResult();
         try {
             service.add(model);
-
-            //将id返回给请求
-            return new ResponseResult(ResponseResult.SUCCESS, model.getId());
+            responseResult.putData("id", model.getId()); //将id返回给请求
+            return responseResult;
         } catch (RuntimeException ex) {
             logger.error("新增失败：{}", ex);
-            return new ResponseResult(ResponseResult.FAILURE, model.getId(), ex.getMessage());
+            responseResult.setStatus(ResponseResult.FAILURE);
+            responseResult.setMessage(ex.getMessage());
+            return responseResult;
         }
-
     }
 
     protected ResponseResult editInternal(HttpServletRequest request, HttpServletResponse response, T model) {
+        ResponseResult responseResult = new ResponseResult();
         try {
             service.update(model);
-            return new ResponseResult(ResponseResult.SUCCESS);
+            responseResult.setStatus(ResponseResult.SUCCESS);
+            responseResult.putData("id", model.getId());
+            return responseResult;
         } catch (RuntimeException ex) {
             logger.error("编辑失败：{}", ex);
-            return new ResponseResult(ResponseResult.FAILURE, null, ex.getMessage());
+            responseResult.setStatus(ResponseResult.FAILURE);
+            responseResult.setMessage(ex.getMessage());
+            return responseResult;
         }
     }
 
@@ -107,7 +113,7 @@ public abstract class RestfulController<T extends BaseEntity> extends BaseContro
             return new ResponseResult(ResponseResult.SUCCESS);
         } catch (RuntimeException ex) {
             logger.error("删除失败：{}", ex);
-            return new ResponseResult(ResponseResult.FAILURE, null, ex.getMessage());
+            return new ResponseResult(ResponseResult.FAILURE, ex.getMessage());
         }
 
     }
