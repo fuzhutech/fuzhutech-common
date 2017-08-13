@@ -30,7 +30,7 @@ public abstract class RestfulController<T extends BaseEntity> extends BaseContro
 
     //获取列表.
     @RequestMapping(method = RequestMethod.GET)
-    public List<T> getList(HttpServletRequest request, HttpServletResponse response, T model) {
+    public ResponseResult getList(HttpServletRequest request, HttpServletResponse response, T model) {
         return getListInternal(request, response, model);
     }
 
@@ -65,8 +65,17 @@ public abstract class RestfulController<T extends BaseEntity> extends BaseContro
         return deleteInternal(request, response, id);
     }
 
-    protected List<T> getListInternal(HttpServletRequest request, HttpServletResponse response, T model) {
-        return service.queryListByWhere(model);
+    protected ResponseResult getListInternal(HttpServletRequest request, HttpServletResponse response, T model) {
+        ResponseResult responseResult = new ResponseResult();
+        try {
+            responseResult.putData("list", service.queryListByWhere(model));
+            return responseResult;
+        } catch (RuntimeException ex) {
+            logger.error("获取列表失败：{}", ex);
+            responseResult.setStatus(ResponseResult.FAILURE);
+            responseResult.setMessage(ex.getMessage());
+            return responseResult;
+        }
     }
 
     protected DataTableResult getListByPageInfoInternal(HttpServletRequest request, HttpServletResponse response, PageInfo pageInfo) {
